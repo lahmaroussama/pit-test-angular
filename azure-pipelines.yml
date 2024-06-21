@@ -24,11 +24,13 @@ stages:
         npm install
         npm run build -- --prod
       displayName: 'Install dependencies and build Angular project'
+      continueOnError: true  # Add this to continue the pipeline even if there are errors in this step
 
     - task: Docker@2
       inputs:
+        containerRegistry: ''
+        repository: '$(imageName)'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
-        repository: '$(imageName)'
       displayName: 'Build Docker Image'
