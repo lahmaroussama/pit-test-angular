@@ -8,10 +8,10 @@ variables:
 
 stages:
 - stage: Build
-  displayName: 'Build Docker Image'
+  displayName: 'Build and Push Docker Image'
   jobs:
   - job: Build
-    displayName: 'Build'
+    displayName: 'Build and Push'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -24,13 +24,24 @@ stages:
         npm install
         npm run build -- --prod
       displayName: 'Install dependencies and build Angular project'
-      continueOnError: true  # Add this to continue the pipeline even if there are errors in this step
 
     - task: Docker@2
       inputs:
-        containerRegistry: ''
-        repository: '$(imageName)'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
+        repository: '$(imageName)'
       displayName: 'Build Docker Image'
+
+    - task: Docker@2
+      inputs:
+        command: 'login'
+        containerRegistry: pitcontainers  # Add your service connection name here
+      displayName: 'Login to ACR'
+
+    - task: Docker@2
+      inputs:
+        command: 'push'
+        repository: '$(imageName)'
+        tags: '$(tag)'
+      displayName: 'Push Docker Image'
