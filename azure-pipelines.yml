@@ -35,4 +35,4 @@ stages:
         repository: '$(acr_repo)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tags)'
+        tags: $(tags)
