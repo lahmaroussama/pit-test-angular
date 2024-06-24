@@ -4,7 +4,7 @@ trigger:
 variables:
   # Docker image details
   imageName: 'myapp'
-  tag: '$(Build.BuildId)'
+  tag: latest
 
 stages:
 - stage: Build
