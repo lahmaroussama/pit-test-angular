@@ -5,6 +5,7 @@ variables:
   # Docker image details
   imageName: 'myapp'
   tag: 'latest'
+  acr_repo: repo_ver2
 
 stages:
 - stage: Build
@@ -42,6 +43,6 @@ stages:
     - task: Docker@2
       inputs:
         command: 'push'
-        repository: $(imageName)
+        repository: $(acr_repo)
         tags: $(tag)
       displayName: 'Push Docker Image'
