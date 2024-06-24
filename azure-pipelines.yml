@@ -36,7 +36,7 @@ stages:
     - task: Docker@2
       inputs:
         command: 'login'
-        containerRegistry: 'pitcontainers'  # Replace with your actual container registry service connection name
+        containerRegistry: 'pitcontainertest'  # Replace with your actual container registry service connection name
       displayName: 'Login to ACR'
 
     - task: Docker@2
