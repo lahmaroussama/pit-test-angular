@@ -4,7 +4,7 @@ trigger:
 variables:
   # Docker image details
   imageName: 'myapp'
-  tag: latest
+  tag: 'latest'
 
 stages:
 - stage: Build
@@ -29,19 +29,19 @@ stages:
       inputs:
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: latest
-        repository: myapp
+        tags: $(tag)
+        repository: $(imageName)
       displayName: 'Build Docker Image'
 
     - task: Docker@2
       inputs:
         command: 'login'
-        containerRegistry: pitcontainers  # Add your service connection name here
+        containerRegistry: 'pitcontainers'  # Replace with your actual container registry service connection name
       displayName: 'Login to ACR'
 
     - task: Docker@2
       inputs:
         command: 'push'
-        repository: myapp
-        tags: latest
+        repository: $(imageName)
+        tags: $(tag)
       displayName: 'Push Docker Image'
