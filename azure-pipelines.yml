@@ -29,8 +29,8 @@ stages:
       inputs:
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
-        repository: '$(imageName)'
+        tags: latest
+        repository: myapp
       displayName: 'Build Docker Image'
 
     - task: Docker@2
@@ -42,6 +42,6 @@ stages:
     - task: Docker@2
       inputs:
         command: 'push'
-        repository: '$(imageName)'
-        tags: '$(tag)'
+        repository: myapp
+        tags: latest
       displayName: 'Push Docker Image'
