@@ -1,11 +1,13 @@
 trigger:
-- main
+- none
 
-variables:
-  # Docker image details
-  imageName: 'myapp'
-  tag: 'latest'
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
   acr_repo: repo_ver2
+  tags: |
+    ver2
 
 stages:
 - stage: Build
@@ -25,24 +27,12 @@ stages:
         npm install
         npm run build -- --prod
       displayName: 'Install dependencies and build Angular project'
-
+    
     - task: Docker@2
+      displayName: 'Build and Push Docker Image'
       inputs:
-        command: 'build'
+        containerRegistry: 'pitcontainertestt'  # Ensure this is the correct service connection name
+        repository: '$(acr_repo)'
+        command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: $(tag)
-        repository: $(imageName)
-      displayName: 'Build Docker Image'
-
-    - task: Docker@2
-      inputs:
-        command: 'login'
-        containerRegistry: 'pitcontainertestt'  # Replace with your actual container registry service connection name
-      displayName: 'Login to ACR'
-
-    - task: Docker@2
-      inputs:
-        command: 'push'
-        repository: $(acr_repo)
-        tags: $(tag)
-      displayName: 'Push Docker Image'
+        tags: '$(tags)'
