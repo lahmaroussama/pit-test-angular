@@ -5,9 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables: 
-  acr_repo: repo_ver2
+  acr_repo: repo_test
   tags: |
-    ver2
+    test
 
 stages:
 - stage: Build
